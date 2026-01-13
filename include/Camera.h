@@ -3,8 +3,8 @@
 
 #include "Ray.h"
 #include "Vec3.h"
+#include "Utils.h"
 #include <cmath>
-#include <cstdlib>
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -47,20 +47,6 @@ public:
             origin + offset,
             lower_left_corner + s*horizontal + t*vertical - origin - offset
         );
-    }
-
-private:
-    Vec3 random_in_unit_disk() const {
-        while (true) {
-            Vec3 p = Vec3(
-                (double)rand() / RAND_MAX * 2.0 - 1.0,
-                (double)rand() / RAND_MAX * 2.0 - 1.0,
-                0
-            );
-            if (p.length_squared() < 1.0) {
-                return p;
-            }
-        }
     }
 };
 

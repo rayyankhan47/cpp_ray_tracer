@@ -1,25 +1,7 @@
 #include "../include/Material.h"
 #include "../include/Sphere.h"
+#include "../include/Utils.h"
 #include <cmath>
-#include <cstdlib>
-
-// Forward declaration helper for random
-Vec3 random_in_unit_sphere() {
-    while (true) {
-        Vec3 p = Vec3(
-            (double)rand() / RAND_MAX * 2.0 - 1.0,
-            (double)rand() / RAND_MAX * 2.0 - 1.0,
-            (double)rand() / RAND_MAX * 2.0 - 1.0
-        );
-        if (p.length_squared() < 1.0) {
-            return p;
-        }
-    }
-}
-
-Vec3 random_unit_vector() {
-    return random_in_unit_sphere().normalized();
-}
 
 bool Lambertian::scatter(const Ray& ray_in, const HitRecord& rec, 
                          Color& attenuation, Ray& scattered) const {
