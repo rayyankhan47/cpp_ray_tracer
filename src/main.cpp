@@ -3,6 +3,7 @@
 #include "../include/Sphere.h"
 #include "../include/Material.h"
 #include "../include/Camera.h"
+#include "../include/Utils.h"
 #include <iostream>
 #include <memory>
 #include <cstdlib>
@@ -18,8 +19,8 @@ Scene random_scene() {
 
     for (int a = -11; a < 11; a++) {
         for (int b = -11; b < 11; b++) {
-            auto choose_mat = (double)rand() / RAND_MAX;
-            Point3 center(a + 0.9 * ((double)rand() / RAND_MAX), 0.2, b + 0.9 * ((double)rand() / RAND_MAX));
+            auto choose_mat = random_double();
+            Point3 center(a + 0.9 * random_double(), 0.2, b + 0.9 * random_double());
 
             if ((center - Point3(4, 0.2, 0)).length() > 0.9) {
                 std::shared_ptr<Material> sphere_material;
@@ -27,20 +28,20 @@ Scene random_scene() {
                 if (choose_mat < 0.8) {
                     // diffuse
                     auto albedo = Color(
-                        (double)rand() / RAND_MAX * (double)rand() / RAND_MAX,
-                        (double)rand() / RAND_MAX * (double)rand() / RAND_MAX,
-                        (double)rand() / RAND_MAX * (double)rand() / RAND_MAX
+                        random_double() * random_double(),
+                        random_double() * random_double(),
+                        random_double() * random_double()
                     );
                     sphere_material = std::make_shared<Lambertian>(albedo);
                     world.add(std::make_shared<Sphere>(center, 0.2, sphere_material));
                 } else if (choose_mat < 0.95) {
                     // metal
                     auto albedo = Color(
-                        0.5 * (1 + (double)rand() / RAND_MAX),
-                        0.5 * (1 + (double)rand() / RAND_MAX),
-                        0.5 * (1 + (double)rand() / RAND_MAX)
+                        0.5 * (1 + random_double()),
+                        0.5 * (1 + random_double()),
+                        0.5 * (1 + random_double())
                     );
-                    auto fuzz = 0.5 * (double)rand() / RAND_MAX;
+                    auto fuzz = 0.5 * random_double();
                     sphere_material = std::make_shared<Metal>(albedo, fuzz);
                     world.add(std::make_shared<Sphere>(center, 0.2, sphere_material));
                 } else {
@@ -98,8 +99,8 @@ int main() {
         for (int i = 0; i < image_width; ++i) {
             Color pixel_color(0, 0, 0);
             for (int s = 0; s < samples_per_pixel; ++s) {
-                double u = (i + ((double)rand() / RAND_MAX)) / (image_width - 1);
-                double v = (j + ((double)rand() / RAND_MAX)) / (image_height - 1);
+                double u = (i + random_double()) / (image_width - 1);
+                double v = (j + random_double()) / (image_height - 1);
                 Ray r = cam.get_ray(u, v);
                 pixel_color += RayTracer::ray_color(r, world, max_depth);
             }
